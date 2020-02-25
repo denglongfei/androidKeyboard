@@ -82,13 +82,13 @@ object KeyboardUtil {
 
 
     private fun setListener(
-        panelView: View,
+        panelView: MyFlow,
         layer: MyLayer
     ) {
         KeyboardHeightProvider(panelView) { keyboardHeight ->
-            //计算并保存键盘高度
-            calculateKeyboardHeight(panelView, keyboardHeight)
             val isKeyboardshow = keyboardHeight > 0
+            //计算并保存键盘高度
+            calculateKeyboardHeight(panelView,layer, keyboardHeight)
             if (isKeyboardshow != lastKeyboardshow) {
                 changedPanelAndKeyboard(isKeyboardshow, layer, panelView)
             }
@@ -102,17 +102,16 @@ object KeyboardUtil {
     /**
      * 计算并保存键盘高度
      */
-    private fun calculateKeyboardHeight(panelView: View, keyboardHeight: Int) {
+    private fun calculateKeyboardHeight(
+        panelView: MyFlow,
+        layer: MyLayer,
+        keyboardHeight: Int
+    ) {
+        val height = getKeyboardHeight(panelView.context)
         //如果面板高度和键盘不同
-        if (panelView.height != getKeyboardHeight(
-                panelView.context
-            )
-        ) {
+        if (panelView.height != height) {
             //改变view高度
-            changedViewHeight(
-                panelView,
-                getKeyboardHeight(panelView.context)
-            )
+            changedViewHeight(panelView, height)
         }
         //保存键盘高度
         val changed =
@@ -124,6 +123,11 @@ object KeyboardUtil {
                 panelView,
                 height
             )
+            //面板是展开的时候 键盘变化需要平移布局
+            if (layer.isExpand){
+                layer.translationY= -height.toFloat()
+            }
+
         }
 
 
@@ -178,9 +182,7 @@ object KeyboardUtil {
         if (focusView == null) {
             layer.translationY = 0f
         } else {
-            hideKeyboard(
-                focusView
-            )
+            hideKeyboard(focusView)
             focusView.clearFocus()
         }
         panelView.visibility = View.INVISIBLE
@@ -200,7 +202,11 @@ object KeyboardUtil {
     /**
      * 改变view高度
      */
-    private fun changedViewHeight(view: View, height: Int) {
+    private fun changedViewHeight(
+        view: MyFlow,
+        height: Int
+    ) {
+
         var layoutParams = view.layoutParams
         if (layoutParams == null) {
             layoutParams = ViewGroup.LayoutParams(
@@ -210,8 +216,8 @@ object KeyboardUtil {
             view.layoutParams = layoutParams
         } else {
             layoutParams.height = height
-            view.requestLayout()
         }
+        view.requestLayout()
     }
 
 
