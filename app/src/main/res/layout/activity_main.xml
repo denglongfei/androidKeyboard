@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ededed"
+        tools:context=".MainActivity">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:background="@mipmap/bg"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/sendMessageFlow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.testapp.keyboardutil.MyFlow
+            android:id="@+id/sendMessageFlow"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="#fefefe"
+            android:padding="10dp"
+            app:constraint_referenced_ids="voiceSwitchIv,sendEdt,switchBut"
+            app:flow_horizontalGap="10dp"
+            app:flow_wrapMode="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"></com.testapp.keyboardutil.MyFlow>
+
+        <ImageView
+            android:id="@+id/voiceSwitchIv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/chatting_voice_btn_icon"
+            tools:ignore="MissingConstraints" />
+
+        <EditText
+            android:id="@+id/sendEdt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/chatting_voice_bg"
+            android:gravity="center_vertical|left"
+            android:minHeight="38dp"
+            android:padding="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:visibility="visible"
+            tools:ignore="MissingConstraints,TextFields"
+            tools:layout_editor_absoluteX="32dp"
+            tools:layout_editor_absoluteY="685dp" />
+
+        <ImageView
+            android:id="@+id/switchBut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:src="@mipmap/chatting_plus_btn_icon"
+            android:visibility="visible"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/sendVoiceBtn"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:background="@drawable/chatting_voice_bg"
+            android:clickable="true"
+            android:gravity="center"
+            android:soundEffectsEnabled="true"
+            android:text="按住说话"
+            android:textColor="#b3b3b3"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/sendEdt"
+            app:layout_constraintEnd_toEndOf="@+id/sendEdt"
+            app:layout_constraintStart_toStartOf="@+id/sendEdt"
+            app:layout_constraintTop_toTopOf="@+id/sendEdt" />
+
+
+        <com.testapp.keyboardutil.MyFlow
+            android:id="@+id/panelFlow"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="#ffffff"
+            android:padding="10dp"
+            app:constraint_referenced_ids="chatAlbum,chatCapture,chatContact,chatLocation,chatFile,chatCloud"
+            app:flow_horizontalGap="10dp"
+            app:flow_maxElementsWrap="4"
+            app:flow_verticalGap="10dp"
+            android:visibility="invisible"
+            app:flow_wrapMode="aligned"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sendMessageFlow"></com.testapp.keyboardutil.MyFlow>
+
+
+        <View
+            android:id="@+id/lineView"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#d5d3d5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sendMessageFlow" />
+
+        <TextView
+            android:id="@+id/chatAlbum"
+            style="@style/text_function_item"
+            android:drawableTop="@mipmap/icon_album"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="相册"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/chatCapture"
+            style="@style/text_function_item"
+            android:drawableTop="@mipmap/icon_capture"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="拍照"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/chatContact"
+            style="@style/text_function_item"
+            android:drawableTop="@mipmap/icon_im_contact"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="联系人"
+            tools:ignore="MissingConstraints" />
+
+
+        <TextView
+            android:id="@+id/chatLocation"
+            style="@style/text_function_item"
+            android:drawableTop="@mipmap/icon_im_location"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="位置"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/chatFile"
+            style="@style/text_function_item"
+            android:drawableTop="@mipmap/icon_im_file"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="文件"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/chatCloud"
+            style="@style/text_function_item"
+            android:drawableTop="@mipmap/icon_cloud"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="我的资料"
+            tools:ignore="MissingConstraints" />
+
+
+        <com.testapp.keyboardutil.MyLayer
+            android:id="@+id/layer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="recyclerView,sendMessageFlow,lineView,panelFlow"
+            tools:ignore="MissingConstraints"></com.testapp.keyboardutil.MyLayer>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
