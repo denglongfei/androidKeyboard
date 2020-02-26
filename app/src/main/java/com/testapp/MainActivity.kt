@@ -15,11 +15,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding =
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
-        KeyboardUtil.init(binding.layer, binding.switchBut, binding.sendEdt, binding.panelFlow)
+        KeyboardUtil.init(binding.layoutHelper, binding.switchBut, binding.sendEdt, binding.panelFlow)
 
         binding.recyclerView.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                KeyboardUtil.hidePanelAndKeyboard(binding.layer,binding.panelFlow)
+                KeyboardUtil.hidePanelAndKeyboard(binding.layoutHelper,binding.panelFlow)
             }
             false
         }

@@ -7,7 +7,7 @@ import androidx.constraintlayout.widget.ConstraintHelper
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.ViewDataBinding
 
-class MyLayer @JvmOverloads constructor(
+class LayoutHelper @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -27,17 +27,7 @@ class MyLayer @JvmOverloads constructor(
         anim.addUpdateListener { animation ->
             val value = animation.animatedValue as Float
             views.map { view ->
-                when (view) {
-                    is ViewDataBinding -> {
-                        view.root.translationY = value
-                    }
-                    is MyFlow -> {
-                        view.translationY = value
-                    }
-                    else -> {
-                        view.translationY = value
-                    }
-                }
+                view.translationY = value
             }
         }
 

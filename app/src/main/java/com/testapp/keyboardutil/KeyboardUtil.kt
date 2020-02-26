@@ -43,13 +43,13 @@ object KeyboardUtil {
      */
     @SuppressLint("ClickableViewAccessibility")
     fun init(
-        layer: MyLayer,
+        layoutHelper: LayoutHelper,
         switch: View, //切换按钮
         edt: EditText,//输入框
         panelView: MyFlow, //面板view
         function: ((isShowPanel: Boolean) -> Unit)? = null
     ) {
-        setListener(panelView, layer)
+        setListener(panelView, layoutHelper)
 
         switch.setOnClickListener {
             //只有面板view展开时才可见
@@ -59,7 +59,7 @@ object KeyboardUtil {
                 showKeyboard(edt)
             } else {
                 //显示面板view
-                showPanel(layer, panelView, edt)
+                showPanel(layoutHelper, panelView, edt)
                 edt.clearFocus()
             }
             function?.invoke(panelView.visibility == View.VISIBLE)
@@ -69,9 +69,9 @@ object KeyboardUtil {
         edt.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 val keyboardHeight = -getKeyboardHeight(
-                    layer.context
+                    layoutHelper.context
                 )
-                layer.translationY = keyboardHeight.toFloat()
+                layoutHelper.translationY = keyboardHeight.toFloat()
                 panelView.visibility = View.INVISIBLE
             }
             false
@@ -83,14 +83,14 @@ object KeyboardUtil {
 
     private fun setListener(
         panelView: MyFlow,
-        layer: MyLayer
+        layoutHelper: LayoutHelper
     ) {
         KeyboardHeightProvider(panelView) { keyboardHeight ->
             val isKeyboardshow = keyboardHeight > 0
             //计算并保存键盘高度
-            calculateKeyboardHeight(panelView,layer, keyboardHeight)
+            calculateKeyboardHeight(panelView,layoutHelper, keyboardHeight)
             if (isKeyboardshow != lastKeyboardshow) {
-                changedPanelAndKeyboard(isKeyboardshow, layer, panelView)
+                changedPanelAndKeyboard(isKeyboardshow, layoutHelper, panelView)
             }
             lastKeyboardshow = isKeyboardshow
 
@@ -104,7 +104,7 @@ object KeyboardUtil {
      */
     private fun calculateKeyboardHeight(
         panelView: MyFlow,
-        layer: MyLayer,
+        layoutHelper: LayoutHelper,
         keyboardHeight: Int
     ) {
         val height = getKeyboardHeight(panelView.context)
@@ -124,8 +124,8 @@ object KeyboardUtil {
                 height
             )
             //面板是展开的时候 键盘变化需要平移布局
-            if (layer.isExpand){
-                layer.translationY= -height.toFloat()
+            if (layoutHelper.isExpand){
+                layoutHelper.translationY= -height.toFloat()
             }
 
         }
@@ -138,12 +138,12 @@ object KeyboardUtil {
      */
     private fun changedPanelAndKeyboard(
         isKeyboardShowing: Boolean,
-        layer: MyLayer,
+        layoutHelper: LayoutHelper,
         panelView: View
     ) {
         //隐藏键盘时
         if (!isKeyboardShowing && panelView.visibility == View.INVISIBLE) {
-            layer.translationY = 0f
+            layoutHelper.translationY = 0f
         }
         //面板view显示时 键盘弹起
         if (isKeyboardShowing && panelView.visibility == View.VISIBLE) {
@@ -156,8 +156,8 @@ object KeyboardUtil {
     /**
      * 显示面板
      */
-    private fun showPanel(layer: MyLayer, panelView: View, edt: EditText) {
-        if (layer.isExpand) {
+    private fun showPanel(layoutHelper: LayoutHelper, panelView: View, edt: EditText) {
+        if (layoutHelper.isExpand) {
             //已经展开 显示面板view隐藏键盘
             panelView.visibility = View.VISIBLE
             hideKeyboard(edt)
@@ -165,9 +165,9 @@ object KeyboardUtil {
             //没有展开  直接展开显示面板view
             panelView.visibility = View.VISIBLE
             val keyboardHeight = -getKeyboardHeight(
-                layer.context
+                layoutHelper.context
             )
-            layer.translationY = keyboardHeight.toFloat()
+            layoutHelper.translationY = keyboardHeight.toFloat()
         }
     }
 
@@ -175,12 +175,12 @@ object KeyboardUtil {
     /**
      * 隐藏面板和键盘
      */
-    fun hidePanelAndKeyboard(layer: MyLayer, panelView: MyFlow) {
+    fun hidePanelAndKeyboard(layoutHelper: LayoutHelper, panelView: MyFlow) {
         val activity = panelView.context as Activity
         val focusView = activity.currentFocus
 
         if (focusView == null) {
-            layer.translationY = 0f
+            layoutHelper.translationY = 0f
         } else {
             hideKeyboard(focusView)
             focusView.clearFocus()
@@ -191,9 +191,9 @@ object KeyboardUtil {
     /**
      * 显示面板和键盘
      */
-    fun showePanelAndKeyboard(layer: MyLayer, edt: EditText) {
-        layer.translationY = -getKeyboardHeight(
-            layer.context
+    fun showePanelAndKeyboard(layoutHelper: LayoutHelper, edt: EditText) {
+        layoutHelper.translationY = -getKeyboardHeight(
+            layoutHelper.context
         ).toFloat()
         showKeyboard(edt)
     }
